@@ -14,9 +14,6 @@ var (
 		Use:   "leto",
 		Short: "Leto is a household Slack helper app",
 		Long:  `A simple app for helping with management of household items through Slack and Trello integrations.`,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Hello World!")
-		},
 	}
 	cfgFile = ""
 )

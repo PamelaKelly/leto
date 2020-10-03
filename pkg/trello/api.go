@@ -1,6 +1,25 @@
 package trello
 
+import (
+	"errors"
+	"fmt"
+
+	gotrello "github.com/VojtechVitek/go-trello"
+)
+
 // GetBoard ...
-func GetBoard() (string, error) {
-	return "board", nil
+func (client *Client) GetBoard(name string) (*gotrello.Board, error) {
+	if name == "" {
+		return nil, errors.New("required board name not provided, set the board name with --name option")
+	}
+	boards, err := client.User.Boards()
+	if err != nil {
+		return nil, err
+	}
+	for _, board := range boards {
+		if board.Name == name {
+			return &board, nil
+		}
+	}
+	return nil, fmt.Errorf("could not find board: [%s]", name)
 }
