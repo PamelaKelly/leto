@@ -1,8 +1,6 @@
 package trello
 
 import (
-	"errors"
-
 	gotrello "github.com/VojtechVitek/go-trello"
 )
 
@@ -14,9 +12,6 @@ type Client struct {
 
 // NewClient ...
 func NewClient(apiKey string, token string, member string) (Client, error) {
-	if member == "" {
-		return Client{}, errors.New("required user name not provided, set the user with --user option")
-	}
 	trello, err := gotrello.NewAuthClient(apiKey, &token)
 	if err != nil {
 		return Client{}, err

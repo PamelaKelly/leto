@@ -1,7 +1,6 @@
 package trello
 
 import (
-	"errors"
 	"fmt"
 
 	gotrello "github.com/VojtechVitek/go-trello"
@@ -9,9 +8,6 @@ import (
 
 // GetBoard ...
 func (client *Client) GetBoard(name string) (*gotrello.Board, error) {
-	if name == "" {
-		return nil, errors.New("required board name not provided, set the board name with --name option")
-	}
 	boards, err := client.User.Boards()
 	if err != nil {
 		return nil, err

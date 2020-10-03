@@ -19,7 +19,9 @@ var user string
 func init() {
 	// flags
 	trelloCmd.PersistentFlags().StringVar(&user, "user", "", "Specifcy a user in Trello")
-	getBoardCmd.PersistentFlags().StringVar(&board, "name", "", "Specifcy a board in Trello")
+	trelloCmd.MarkPersistentFlagRequired("user")
+	getBoardCmd.Flags().StringVar(&board, "name", "", "Specifcy a board in Trello")
+	getBoardCmd.MarkFlagRequired("name")
 	rootCmd.AddCommand(trelloCmd)
 	trelloCmd.AddCommand(getBoardCmd)
 }
@@ -27,7 +29,10 @@ func init() {
 var trelloCmd = &cobra.Command{
 	Use:   "trello",
 	Short: "Interact with Trello via CLI",
-	Long:  "Use this command to send requests to Trello to get, or post data",
+	Long:  "Use this command to interact with Trello",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Welcome to the Leto Trello CLI")
+	},
 }
 
 var getBoardCmd = &cobra.Command{
@@ -48,9 +53,9 @@ var getBoardCmd = &cobra.Command{
 		}
 		client, err := trello.NewClient(apiKey, token, user)
 		if err != nil {
-			return fmt.Errorf("failed in instantiate trello client with error: %s", err.Error())
+			return fmt.Errorf("failed to instantiate Trello client with error: %s", err.Error())
 		}
-		// For the moment assuming the first arg is the board name
+
 		board, err := client.GetBoard(board)
 		if err != nil {
 			return fmt.Errorf("error getting board from Trello: %s", err.Error())
