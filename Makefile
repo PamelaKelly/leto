@@ -11,3 +11,10 @@ clean:
 .PHONY: test
 test:
 	@go test --cover ./...
+
+.PHONY: fmt
+fmt:
+	@go fmt
+
+.PHONY: validate
+validate: test fmt
