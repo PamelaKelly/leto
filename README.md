@@ -12,7 +12,7 @@ This slack bot should be able to:
 - Given a recipe name, lookup recipe in backend storage service and populate shopping list based on ingredients listed there. 
 - Print out the current contents of the shopping list. 
 
-## Example Usage
+## Example Usage
 
 There are some required Environment Variables: 
 ```
