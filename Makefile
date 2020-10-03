@@ -17,4 +17,4 @@ fmt:
 	@go fmt
 
 .PHONY: validate
-validate: test fmt
+validate: build test fmt clean
