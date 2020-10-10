@@ -1,6 +1,6 @@
-## Hermes
+## Leto
 
-A slackbot for use at home to manage interactions with smart devices, integration with trello to do lists and tracking, reminders and more. 
+A Golang CLI tool for use at home to manage interactions with smart devices, integration with trello to do lists and tracking, reminders and more. 
 
 ### Feature - Food Shopping Trello Integration
 
@@ -35,7 +35,7 @@ To get more info on a specific subcommand:
 ./leto trello help
 ```
 
-To get a specific board from Trello
+To get a shopping list stored as a card, on a list on a Trello board:
 ```
-/leto trello --user=pamelakelly7 board --name="History"
+./leto shopping list --user=<your-trello-user> --board=<trello-board-name> --name=<trello-list-name> --card=<trello-card-name>
 ```
