@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	trelloAPIEnvKey   = "TRELLO_APIKEY"
+	trelloAppEnvKey   = "TRELLO_APPKEY"
 	trelloTokenEnvKey = "TRELLO_TOKEN"
 )
 
@@ -17,7 +17,7 @@ var (
 	boardName string
 	user      string
 	listName  string
-	apiKey    string
+	appKey    string
 	token     string
 )
 
@@ -37,31 +37,26 @@ var trelloCmd = &cobra.Command{
 	Use:   "trello",
 	Short: "Interact with Trello via CLI",
 	Long:  "Use this command to interact with Trello",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		// validate requirements for instantiating a connection with the Trello Api
-		apiKey = os.Getenv(trelloAPIEnvKey)
-		token = os.Getenv(trelloTokenEnvKey)
-
-		// Temporary simple validation
-		if apiKey == "" {
-			return fmt.Errorf("required enviornment variable empty: %s", trelloAPIEnvKey)
-		}
-		if token == "" {
-			return fmt.Errorf("required enviornment variable empty: %s", trelloTokenEnvKey)
-		}
-		return nil
-	},
 }
 
 var getBoardCmd = &cobra.Command{
 	Use:   "board",
 	Short: "Gets a Trello board",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		client, err := trello.NewClient(apiKey, token, user)
+		// validate requirements for instantiating a connection with the Trello Api
+		appKey = os.Getenv(trelloAppEnvKey)
+		token = os.Getenv(trelloTokenEnvKey)
+		// Temporary simple validation
+		if appKey == "" {
+			return fmt.Errorf("required enviornment variable empty: %s", trelloAppEnvKey)
+		}
+		if token == "" {
+			return fmt.Errorf("required enviornment variable empty: %s", trelloTokenEnvKey)
+		}
+		client, err := trello.NewClient(appKey, token, user)
 		if err != nil {
 			return fmt.Errorf("failed to instantiate Trello client with error: %s", err.Error())
 		}
-
 		board, err := client.GetBoard(boardName)
 		if err != nil {
 			return fmt.Errorf("error getting board from Trello: %s", err.Error())
@@ -75,7 +70,7 @@ var getListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Gets a list from a Trello board",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		client, err := trello.NewClient(apiKey, token, user)
+		client, err := trello.NewClient(appKey, token, user)
 		if err != nil {
 			return fmt.Errorf("failed to instantiate Trello client with error: %s", err.Error())
 		}

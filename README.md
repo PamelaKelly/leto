@@ -16,7 +16,7 @@ This slack bot should be able to:
 
 There are some required Environment Variables: 
 ```
-export TRELLO_APIKEY=<INSERT_YOUR_DEVELOPER_KEY_HERE>
+export TRELLO_APPKEY=<INSERT_YOUR_DEVELOPER_KEY_HERE>
 export TRELLO_TOKEN=<INSERT_YOUR_TRELLO_AUTH_TOKEN_HERE>
 ```
 

@@ -1,28 +1,33 @@
 package trello
 
 import (
-	gotrello "github.com/VojtechVitek/go-trello"
+	"github.com/adlio/trello"
+	"github.com/sirupsen/logrus"
 )
 
 // Client wrapper for Trello api
 type Client struct {
-	API  *gotrello.Client
-	User *gotrello.Member
+	API  *trello.Client
+	User *trello.Member
 }
 
 // NewClient ...
-func NewClient(apiKey string, token string, member string) (Client, error) {
-	trello, err := gotrello.NewAuthClient(apiKey, &token)
-	if err != nil {
-		return Client{}, err
-	}
+func NewClient(appKey string, token string, member string) (Client, error) {
+	// Instantiate logger to allow debug level logging
+	logger := logrus.New()
+	logger.SetLevel(logrus.DebugLevel)
+
+	// Instantiate client and attach logger
+	client := trello.NewClient(appKey, token)
+	client.Logger = logger
+
 	// set member
-	user, err := trello.Member(member)
+	user, err := client.GetMember(member, trello.Defaults())
 	if err != nil {
 		return Client{}, err
 	}
 	return Client{
-		API:  trello,
+		API:  client,
 		User: user,
 	}, nil
 }
