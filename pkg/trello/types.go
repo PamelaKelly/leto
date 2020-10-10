@@ -1,8 +1,16 @@
 package trello
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/adlio/trello"
 	"github.com/sirupsen/logrus"
+)
+
+const (
+	trelloAppEnvKey   = "TRELLO_APPKEY"
+	trelloTokenEnvKey = "TRELLO_TOKEN"
 )
 
 // Client wrapper for Trello api
@@ -12,7 +20,17 @@ type Client struct {
 }
 
 // NewClient ...
-func NewClient(appKey string, token string, member string) (Client, error) {
+func NewClient(member string) (*Client, error) {
+	// validate requirements for instantiating a connection with the Trello Api
+	appKey := os.Getenv(trelloAppEnvKey)
+	token := os.Getenv(trelloTokenEnvKey)
+	if appKey == "" {
+		return nil, fmt.Errorf("required enviornment variable empty: %s", trelloAppEnvKey)
+	}
+	if token == "" {
+		return nil, fmt.Errorf("required enviornment variable empty: %s", trelloTokenEnvKey)
+	}
+
 	// Instantiate logger to allow debug level logging
 	logger := logrus.New()
 	logger.SetLevel(logrus.DebugLevel)
@@ -24,9 +42,9 @@ func NewClient(appKey string, token string, member string) (Client, error) {
 	// set member
 	user, err := client.GetMember(member, trello.Defaults())
 	if err != nil {
-		return Client{}, err
+		return nil, err
 	}
-	return Client{
+	return &Client{
 		API:  client,
 		User: user,
 	}, nil
