@@ -38,16 +38,29 @@ func (c *Client) GetBoard(name string) (*trello.Board, error) {
 // Return:
 // + A struct representing a trello list
 // + an error if the list is not found
-func (c *Client) GetList(boardname string, name string) (*trello.List, error) {
-	board, err := c.GetBoard(boardname)
+func (c *Client) GetList(board *trello.Board, name string) (*trello.List, error) {
+	lists, err := board.GetLists(trello.Defaults())
 	if err != nil {
 		return nil, err
 	}
-	lists, err := board.GetLists(trello.Defaults())
 	for _, list := range lists {
 		if list.Name == name {
 			return list, nil
 		}
 	}
-	return nil, fmt.Errorf("could not find list: [%s]", name)
+	return nil, fmt.Errorf("could not find list %s on board %s", name, board.Name)
+}
+
+// GetCard ...
+func (c *Client) GetCard(list *trello.List, name string) (*trello.Card, error) {
+	cards, err := list.GetCards(trello.Defaults())
+	if err != nil {
+		return nil, err
+	}
+	for _, card := range cards {
+		if card.Name == name {
+			return card, nil
+		}
+	}
+	return nil, fmt.Errorf("could not find card %s on list %s", name, list.Name)
 }
